@@ -7,19 +7,21 @@ SUPABASE_KEY = os.environ["SUPABASE_KEY"]
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-rss_url = "http://feeds.bbci.co.uk/news/rss.xml"
-feed = feedparser.parse(rss_url)
+sources = supabase.table("sources").select("*").execute()
 
-for article in feed.entries[:5]:
-    data = {
-        "title": article.title,
-        "slug": article.title.lower().replace(" ", "-"),
-        "summary": getattr(article, "summary", ""),
-        "content": getattr(article, "summary", ""),
-        "source": "BBC",
-        "category": "World"
-    }
+for source in sources.data:
+    feed = feedparser.parse(source["url"])
 
-    supabase.table("articles").insert(data).execute()
+    for article in feed.entries[:5]:
+        data = {
+            "title": article.title,
+            "slug": article.title.lower().replace(" ", "-"),
+            "summary": getattr(article, "summary", ""),
+            "content": getattr(article, "summary", ""),
+            "source": source["name"],
+            "category": "General"
+        }
+
+        supabase.table("articles").insert(data).execute()
 
 print("Articles inserted successfully")

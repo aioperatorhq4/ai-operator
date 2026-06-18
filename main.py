@@ -16,28 +16,30 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 # ----------------------------
 
 AI_KEYWORDS = [
-    "ai",
     "artificial intelligence",
     "machine learning",
-    "openai",
-    "chatgpt",
-    "gpt",
-    "anthropic",
-    "claude",
-    "gemini",
-    "google ai",
-    "llm",
-    "large language model",
-    "nvidia",
-    "semiconductor",
-    "chip",
-    "robot",
-    "robotics",
-    "automation",
     "deep learning",
-    "neural network"
+    "neural network",
+    "large language model",
+    "llm",
+    "chatgpt",
+    "openai",
+    "gpt-4",
+    "gpt-5",
+    "claude",
+    "anthropic",
+    "gemini",
+    "copilot",
+    "midjourney",
+    "stability ai",
+    "hugging face",
+    "generative ai",
+    "ai model",
+    "ai startup",
+    "ai company",
+    "ai tool",
+    "ai assistant"
 ]
-
 # ----------------------------
 # Helper
 # ----------------------------
@@ -46,7 +48,7 @@ def is_ai_article(title, summary):
     text = f"{title} {summary}".lower()
 
     for keyword in AI_KEYWORDS:
-        if keyword.lower() in text:
+        if keyword in text:
             return True
 
     return False

@@ -2,78 +2,113 @@ import os
 import feedparser
 from supabase import create_client
 
-# ----------------------------
-# Supabase
-# ----------------------------
+# -----------------------------
+# SUPABASE
+# -----------------------------
 
 SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_KEY = os.environ["SUPABASE_KEY"]
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# ----------------------------
-# AI Keywords
-# ----------------------------
+# -----------------------------
+# AI SCORING SYSTEM
+# -----------------------------
 
-AI_KEYWORDS = [
-    "artificial intelligence",
-    "machine learning",
-    "deep learning",
-    "neural network",
-    "large language model",
-    "llm",
-    "chatgpt",
-    "openai",
-    "gpt-4",
-    "gpt-5",
-    "claude",
-    "anthropic",
-    "gemini",
-    "copilot",
-    "midjourney",
-    "stability ai",
-    "hugging face",
-    "generative ai",
-    "ai model",
-    "ai startup",
-    "ai company",
-    "ai tool",
-    "ai assistant"
+AI_KEYWORDS = {
+    "ai": 3,
+    "artificial intelligence": 3,
+    "openai": 3,
+    "chatgpt": 3,
+    "anthropic": 3,
+    "claude": 3,
+    "gemini": 3,
+    "deepmind": 3,
+    "hugging face": 3,
+    "llm": 3,
+    "large language model": 3,
+    "machine learning": 2,
+    "neural network": 2,
+    "transformer": 2,
+    "generative ai": 2,
+    "foundation model": 2,
+    "gpu": 1,
+    "inference": 1,
+    "fine-tuning": 1,
+    "prompt": 1,
+    "rag": 1,
+    "agent": 1,
+    "agents": 1,
+    "copilot": 1
+}
+
+NEGATIVE_KEYWORDS = [
+    "football",
+    "soccer",
+    "baseball",
+    "basketball",
+    "tennis",
+    "cricket",
+    "weather",
+    "election",
+    "warship",
+    "transfer",
+    "premier league",
+    "world cup",
+    "championship",
+    "goal",
+    "match",
+    "player",
+    "coach"
 ]
-# ----------------------------
-# Helper
-# ----------------------------
 
-def is_ai_article(title, summary):
-    text = f"{title} {summary}".lower()
+# -----------------------------
+# AI SCORE
+# -----------------------------
 
-    for keyword in AI_KEYWORDS:
+def calculate_ai_score(text):
+    text = text.lower()
+
+    score = 0
+
+    for keyword, points in AI_KEYWORDS.items():
         if keyword in text:
-            return True
+            score += points
 
-    return False
+    for keyword in NEGATIVE_KEYWORDS:
+        if keyword in text:
+            score -= 3
 
-# ----------------------------
-# Get RSS Sources
-# ----------------------------
+    return score
+
+
+# -----------------------------
+# GET SOURCES FROM DATABASE
+# -----------------------------
 
 sources = supabase.table("sources").select("*").execute()
 
 for source in sources.data:
 
     source_name = source["name"]
-    rss_url = source["url"]
+    source_url = source["url"]
 
-    print(f"Processing {source_name}")
+    print(f"\nProcessing {source_name}")
 
-    feed = feedparser.parse(rss_url)
+    feed = feedparser.parse(source_url)
 
     for article in feed.entries[:20]:
 
-        title = article.get("title", "")
-        summary = article.get("summary", "")
+        title = getattr(article, "title", "")
+        summary = getattr(article, "summary", "")
 
-        if not is_ai_article(title, summary):
+        text_to_check = f"{title} {summary}"
+
+        score = calculate_ai_score(text_to_check)
+
+        print(f"Score {score}: {title}")
+
+        if score < 3:
             continue
 
         slug = (
@@ -81,11 +116,10 @@ for source in sources.data:
             .replace(" ", "-")
             .replace("'", "")
             .replace('"', "")
-            .replace(",", "")
-            .replace(".", "")
         )
 
-        # Check duplicate
+        # DUPLICATE CHECK
+
         existing = (
             supabase
             .table("articles")
@@ -110,4 +144,4 @@ for source in sources.data:
 
         print(f"Inserted: {title}")
 
-print("Finished processing all sources")
+print("\nFinished processing all sources")

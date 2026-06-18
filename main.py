@@ -10,6 +10,8 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 sources = supabase.table("sources").select("*").execute()
 
 for source in sources.data:
+    print(f"Processing {source['name']}")
+
     feed = feedparser.parse(source["url"])
 
     for article in feed.entries[:5]:
@@ -24,4 +26,4 @@ for source in sources.data:
 
         supabase.table("articles").insert(data).execute()
 
-print("Articles inserted successfully")
+print("Finished processing all sources")

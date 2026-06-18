@@ -15,9 +15,24 @@ for source in sources.data:
     feed = feedparser.parse(source["url"])
 
     for article in feed.entries[:5]:
+
+        article_url = getattr(article, "link", "")
+
+        existing = (
+            supabase
+            .table("articles")
+            .select("id")
+            .eq("slug", article_url)
+            .execute()
+        )
+
+        if existing.data:
+            print(f"Skipping duplicate: {article.title}")
+            continue
+
         data = {
             "title": article.title,
-            "slug": article.title.lower().replace(" ", "-"),
+            "slug": article_url,
             "summary": getattr(article, "summary", ""),
             "content": getattr(article, "summary", ""),
             "source": source["name"],
@@ -25,5 +40,7 @@ for source in sources.data:
         }
 
         supabase.table("articles").insert(data).execute()
+
+        print(f"Inserted: {article.title}")
 
 print("Finished processing all sources")

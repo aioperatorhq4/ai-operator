@@ -2,45 +2,110 @@ import os
 import feedparser
 from supabase import create_client
 
+# ----------------------------
+# Supabase
+# ----------------------------
+
 SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_KEY = os.environ["SUPABASE_KEY"]
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+# ----------------------------
+# AI Keywords
+# ----------------------------
+
+AI_KEYWORDS = [
+    "ai",
+    "artificial intelligence",
+    "machine learning",
+    "openai",
+    "chatgpt",
+    "gpt",
+    "anthropic",
+    "claude",
+    "gemini",
+    "google ai",
+    "llm",
+    "large language model",
+    "nvidia",
+    "semiconductor",
+    "chip",
+    "robot",
+    "robotics",
+    "automation",
+    "deep learning",
+    "neural network"
+]
+
+# ----------------------------
+# Helper
+# ----------------------------
+
+def is_ai_article(title, summary):
+    text = f"{title} {summary}".lower()
+
+    for keyword in AI_KEYWORDS:
+        if keyword.lower() in text:
+            return True
+
+    return False
+
+# ----------------------------
+# Get RSS Sources
+# ----------------------------
+
 sources = supabase.table("sources").select("*").execute()
 
 for source in sources.data:
-    print(f"Processing {source['name']}")
 
-    feed = feedparser.parse(source["url"])
+    source_name = source["name"]
+    rss_url = source["url"]
 
-    for article in feed.entries[:5]:
+    print(f"Processing {source_name}")
 
-        article_url = getattr(article, "link", "")
+    feed = feedparser.parse(rss_url)
 
+    for article in feed.entries[:20]:
+
+        title = article.get("title", "")
+        summary = article.get("summary", "")
+
+        if not is_ai_article(title, summary):
+            continue
+
+        slug = (
+            title.lower()
+            .replace(" ", "-")
+            .replace("'", "")
+            .replace('"', "")
+            .replace(",", "")
+            .replace(".", "")
+        )
+
+        # Check duplicate
         existing = (
             supabase
             .table("articles")
             .select("id")
-            .eq("slug", article_url)
+            .eq("slug", slug)
             .execute()
         )
 
         if existing.data:
-            print(f"Skipping duplicate: {article.title}")
             continue
 
         data = {
-            "title": article.title,
-            "slug": article_url,
-            "summary": getattr(article, "summary", ""),
-            "content": getattr(article, "summary", ""),
-            "source": source["name"],
-            "category": "General"
+            "title": title,
+            "slug": slug,
+            "summary": summary,
+            "content": summary,
+            "source": source_name,
+            "category": "AI"
         }
 
         supabase.table("articles").insert(data).execute()
 
-        print(f"Inserted: {article.title}")
+        print(f"Inserted: {title}")
 
 print("Finished processing all sources")

@@ -1,15 +1,18 @@
 import os
 import feedparser
+from openai import OpenAI
 from supabase import create_client
 
 # -----------------------------
-# SUPABASE
+# CONFIG
 # -----------------------------
 
 SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_KEY = os.environ["SUPABASE_KEY"]
+OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 # -----------------------------
 # AI SCORING SYSTEM
@@ -81,9 +84,46 @@ def calculate_ai_score(text):
 
     return score
 
+# -----------------------------
+# ARTICLE REWRITER
+# -----------------------------
+
+def rewrite_article(title, summary):
+
+    prompt = f"""
+You are a technology journalist.
+
+Rewrite the following news into an original article.
+
+TITLE:
+{title}
+
+SUMMARY:
+{summary}
+
+Requirements:
+- 300 to 500 words
+- Professional newspaper style
+- Explain what happened
+- Explain why it matters
+- Explain possible business implications
+- Do not copy the original wording
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+
+    return response.choices[0].message.content
 
 # -----------------------------
-# GET SOURCES FROM DATABASE
+# GET SOURCES
 # -----------------------------
 
 sources = supabase.table("sources").select("*").execute()
@@ -118,8 +158,6 @@ for source in sources.data:
             .replace('"', "")
         )
 
-        # DUPLICATE CHECK
-
         existing = (
             supabase
             .table("articles")
@@ -131,13 +169,18 @@ for source in sources.data:
         if existing.data:
             continue
 
+        print("Rewriting article...")
+
+        rewritten_article = rewrite_article(title, summary)
+
         data = {
             "title": title,
             "slug": slug,
             "summary": summary,
             "content": summary,
             "source": source_name,
-            "category": "AI"
+            "category": "AI",
+            "rewritten_article": rewritten_article
         }
 
         supabase.table("articles").insert(data).execute()

@@ -1,3 +1,4 @@
 feedparser
 supabase
 python-dotenv
+openai

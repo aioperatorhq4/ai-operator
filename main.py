@@ -15,74 +15,85 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 # -----------------------------
-# AI SCORING SYSTEM
 # -----------------------------
 
-AI_KEYWORDS = {
-    "ai": 3,
-    "artificial intelligence": 3,
-    "openai": 3,
-    "chatgpt": 3,
-    "anthropic": 3,
-    "claude": 3,
-    "gemini": 3,
-    "deepmind": 3,
-    "hugging face": 3,
-    "llm": 3,
-    "large language model": 3,
-    "machine learning": 2,
-    "neural network": 2,
-    "transformer": 2,
-    "generative ai": 2,
-    "foundation model": 2,
-    "gpu": 1,
-    "inference": 1,
-    "fine-tuning": 1,
-    "prompt": 1,
-    "rag": 1,
-    "agent": 1,
-    "agents": 1,
-    "copilot": 1
-}
-
-NEGATIVE_KEYWORDS = [
-    "football",
-    "soccer",
-    "baseball",
-    "basketball",
-    "tennis",
-    "cricket",
-    "weather",
-    "election",
-    "warship",
-    "transfer",
-    "premier league",
-    "world cup",
-    "championship",
-    "goal",
-    "match",
-    "player",
-    "coach"
-]
-
 # -----------------------------
-# AI SCORE
+# AI ARTICLE FILTER
 # -----------------------------
 
-def calculate_ai_score(text):
-    text = text.lower()
+def is_ai_article(title, summary):
 
-    score = 0
+    prompt = f"""
+You are the editor of AI Operator.
 
-    for keyword, points in AI_KEYWORDS.items():
-        if keyword in text:
-            score += points
+Determine whether this article is primarily about Artificial Intelligence.
 
-    for keyword in NEGATIVE_KEYWORDS:
-        if keyword in text:
-            score -= 3
+TITLE:
+{title}
 
-    return score
+SUMMARY:
+{summary}
+
+INCLUDE articles primarily about:
+
+* Artificial Intelligence
+* Machine Learning
+* Large Language Models
+* OpenAI
+* Anthropic
+* Claude
+* Gemini
+* Google DeepMind
+* AI startups
+* AI products
+* AI infrastructure
+* AI chips
+* AI research
+* AI regulation
+* AI investments
+* AI adoption
+* AI agents
+* Robotics powered by AI
+
+EXCLUDE articles primarily about:
+
+* Politics
+* Elections
+* Wars
+* Military conflict
+* Crime
+* Weather
+* Sports
+* Entertainment
+* Celebrity news
+* General business news
+* Energy markets
+* Geopolitics
+
+even if AI is briefly mentioned.
+
+Return only:
+
+YES
+
+or
+
+NO
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+
+    answer = response.choices[0].message.content.strip().upper()
+
+    return "YES" in answer
 
 # -----------------------------
 # ARTICLE REWRITER
@@ -160,9 +171,27 @@ Do NOT display:
 * "Final headline"
 * Any labels or explanations
 
-The first line of the output must be the headline itself.
+OUTPUT FORMAT RULES
 
-The second line must begin the article.
+The output must look like a published article.
+
+Do NOT output:
+
+* FINAL HEADLINE:
+* HEADLINE:
+* KEY TAKEAWAY
+* WHAT HAPPENED
+* WHY IT MATTERS
+* BUSINESS IMPACT
+* WHAT TO WATCH NEXT
+
+Do NOT output any section labels.
+
+The first line must be the headline.
+
+Leave one blank line.
+
+Then begin the article immediately.
 
 CRITICAL FACTUALITY RULES
 
@@ -214,7 +243,12 @@ The output should read like a published article ready to appear on AI Operator.
     return response.choices[0].message.content
 
 # -----------------------------
+# -----------------------------
+
+# -----------------------------
+
 # GET SOURCES
+
 # -----------------------------
 
 sources = supabase.table("sources").select("*").execute()
@@ -233,13 +267,11 @@ for source in sources.data:
         title = getattr(article, "title", "")
         summary = getattr(article, "summary", "")
 
-        text_to_check = f"{title} {summary}"
+        is_ai = is_ai_article(title, summary)
 
-        score = calculate_ai_score(text_to_check)
+        print(f"AI Article: {is_ai} - {title}")
 
-        print(f"Score {score}: {title}")
-
-        if score < 3:
+        if not is_ai:
             continue
 
         slug = (
@@ -248,7 +280,7 @@ for source in sources.data:
             .replace("'", "")
             .replace('"', "")
         )
-
+        
         existing = (
             supabase
             .table("articles")
@@ -277,5 +309,4 @@ for source in sources.data:
         supabase.table("articles").insert(data).execute()
 
         print(f"Inserted: {title}")
-
 print("\nFinished processing all sources")

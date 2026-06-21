@@ -137,54 +137,55 @@ IMPORTANT RULES
 
 HEADLINE CREATION
 
-Generate 5 headline options.
+Generate 5 headline options internally.
 
-The headlines should:
+Evaluate them using:
 
-* Be specific.
-* Be factual.
-* Create curiosity without clickbait.
-* Be credible.
-* Be relevant to founders and business owners.
-* Be similar in quality to TechCrunch, Bloomberg, WSJ, or The Verge.
-* Maximum 12 words.
-
-Then score all 5 headlines internally and choose the strongest one based on:
-
-* Click-through potential
 * Credibility
 * Clarity
+* Curiosity
 * Business relevance
+* Click-through potential
 
-Output only the winning headline as:
+Select the strongest headline.
 
-FINAL HEADLINE:
+Display ONLY the selected headline.
 
-Then continue with:
+Do NOT display:
 
-KEY TAKEAWAY
+* Alternative headlines
+* Scores
+* Reasoning
+* "Winning headline"
+* "Final headline"
+* Any labels or explanations
 
-Write 2-3 sentences explaining the most important thing the reader should know.
+The first line of the output must be the headline itself.
 
-WHAT HAPPENED
+The second line must begin the article.
 
-Explain the news clearly.
+CRITICAL FACTUALITY RULES
 
-WHY IT MATTERS
+* Use only information explicitly present in the source title and source summary.
+* Never add facts from your own knowledge.
+* Never add statistics unless they appear in the source.
+* Never add dates, locations, people, companies, products, or events unless they appear in the source.
+* Never assume context that is not provided.
+* If information is limited, clearly say so.
+* If a conclusion cannot be supported by the source, do not make it.
+* Accuracy is more important than completeness.
 
-Explain why the development is significant.
+AI RELEVANCE RULE
 
-BUSINESS IMPACT
+This publication covers Artificial Intelligence.
 
-Explain how companies, founders, investors, operators or professionals could be affected.
+The article must remain focused on AI, AI companies, AI products, AI research, AI regulation, AI adoption, AI investments, AI infrastructure, or AI business applications.
 
-WHAT TO WATCH NEXT
-
-Explain what developments readers should monitor in the coming weeks or months.
+If AI is not a central part of the story, do not force AI-related conclusions or implications.
 
 ARTICLE REQUIREMENTS
 
-* 500 to 800 words.
+* Write 400 to 700 words.
 * Professional newsroom style.
 * Easy to skim.
 * Short paragraphs.
@@ -192,8 +193,11 @@ ARTICLE REQUIREMENTS
 * No repetition.
 * No clickbait.
 * No speculation presented as fact.
+* Explain what happened.
+* Explain why it may be relevant.
+* Explain potential implications only when supported by the source.
 
-End with a single sentence that summarizes the most important implication for business leaders.
+The output should read like a published article ready to appear on AI Operator.
 """
 
 

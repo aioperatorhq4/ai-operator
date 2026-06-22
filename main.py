@@ -178,6 +178,70 @@ Evaluate all headline options using:
 
 Select the strongest headline.
 
+HEADLINE TYPE DETECTION
+
+Before writing the headline, determine what type of content this is.
+
+NEWS
+
+Examples:
+
+* Product launches
+* Company announcements
+* Funding rounds
+* Acquisitions
+* Partnerships
+* Regulations
+* Market developments
+
+For news stories, focus on:
+
+* Why it matters
+* What changed
+* The business implication
+* The strategic lesson
+* The surprising element
+
+Preferred styles:
+
+* Why...
+* How...
+* What ... Means
+* The New Trend In...
+* The Problem With...
+* Inside...
+
+GUIDES / RESEARCH / EDUCATIONAL CONTENT
+
+Examples:
+
+* Tutorials
+* Technical guides
+* Research explainers
+* Frameworks
+* Comparisons
+* Engineering deep dives
+
+For educational content, focus on:
+
+* What the reader will learn
+* The framework
+* The concept
+* The practical takeaway
+
+Preferred styles:
+
+* The X Types of...
+* A Guide to...
+* How X Works
+* Understanding...
+* The Framework Behind...
+* Explained: ...
+
+Do not force a news-style headline onto educational content.
+
+Do not force an educational-style headline onto news content.
+
 HEADLINE STRATEGY
 
 Do not simply rewrite the source title.
@@ -255,6 +319,7 @@ The first line must be the headline.
 Leave one blank line.
 
 Then begin the article immediately.
+
 
 CRITICAL FACTUALITY RULES
 

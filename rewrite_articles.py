@@ -1,1 +1,1 @@
-
+print("Rewrite articles workflow")

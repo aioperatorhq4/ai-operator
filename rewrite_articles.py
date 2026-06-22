@@ -6,4 +6,14 @@ SUPABASE_KEY = os.environ["SUPABASE_KEY"]
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-print("Connected to Supabase")
+articles = (
+    supabase
+    .table("articles")
+    .select("id,title,created_at")
+    .order("created_at", desc=True)
+    .limit(50)
+    .execute()
+)
+
+for article in articles.data:
+    print(article["title"])

@@ -320,41 +320,80 @@ Leave one blank line.
 
 Then begin the article immediately.
 
-
 CRITICAL FACTUALITY RULES
 
-Use only information explicitly present in the source title and source summary.
-Never add facts from your own knowledge.
-Never add statistics unless they appear in the source.
-Never add dates, locations, people, companies, products, or events unless they appear in the source.
-Never assume context that is not provided.
-If information is limited, clearly say so.
-If a conclusion cannot be supported by the source, do not make it.
-Accuracy is more important than completeness.
+* Use only information explicitly present in the source title and source summary.
+* Never add facts from your own knowledge.
+* Never add statistics unless they appear in the source.
+* Never add dates, locations, people, companies, products, or events unless they appear in the source.
+* Never assume context that is not provided.
+* If information is limited, clearly say so.
+* If a conclusion cannot be supported by the source, do not make it.
+* Accuracy is more important than completeness.
 
 AI RELEVANCE RULE
 
-This publication covers Artificial Intelligence.
+* This publication covers Artificial Intelligence.
+* The article must remain focused on AI, AI companies, AI products, AI research, AI regulation, AI adoption, AI investments, AI infrastructure, or AI business applications.
+* If AI is not a central part of the story, do not force AI-related conclusions or implications.
 
-The article must remain focused on AI, AI companies, AI products, AI research, AI regulation, AI adoption, AI investments, AI infrastructure, or AI business applications.
+SOURCE DEPTH RULES
 
-If AI is not a central part of the story, do not force AI-related conclusions or implications.
+* First assess how much information is available in the source material.
+
+RICH SOURCE
+
+A source is considered rich if it contains:
+
+* Multiple facts
+* Detailed explanations
+* Quotes
+* Data
+* Product details
+* Research findings
+* Significant context
+
+For rich sources, provide a more detailed article.
+
+LIMITED SOURCE
+
+A source is considered limited if it contains only:
+
+* A headline
+* A brief summary
+* One or two facts
+* Minimal context
+
+For limited sources:
+
+* Prioritize accuracy over completeness.
+* Do not expand the story with assumptions.
+* Do not invent analysis to reach a target length.
+* Do not speculate about market impact, investor reactions, customer behavior, regulations, competition, adoption, or future developments unless explicitly supported by the source.
+* Clearly state when information is limited.
+* Keep the article concise.
+
+A shorter accurate article is preferable to a longer speculative article.
 
 ARTICLE REQUIREMENTS
 
-Write 400 to 700 words.
-Professional newsroom style.
-Easy to skim.
-Short paragraphs.
-No filler.
-No repetition.
-No clickbait.
-No speculation presented as fact.
-Explain what happened.
-Explain why it may be relevant.
-Explain potential implications only when supported by the source.
+* Write only as much as the source material supports.
+* Typical length: 250 to 700 words.
+* Limited sources should produce shorter articles.
+* Rich sources may produce longer articles.
+* Professional newsroom style.
+* Easy to skim.
+* Short paragraphs.
+* No filler.
+* No repetition.
+* No clickbait.
+* No speculation presented as fact.
+* Explain what happened.
+* Explain why it may be relevant.
+* Explain potential implications only when supported by the source.
 
 The output should read like a published article ready to appear on AI Operator.
+
 """
 
 

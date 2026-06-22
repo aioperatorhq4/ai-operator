@@ -152,24 +152,59 @@ Generate 5 headline options internally.
 
 Evaluate them using:
 
-* Credibility
-* Clarity
-* Curiosity
-* Business relevance
-* Click-through potential
+Credibility
+Clarity
+Curiosity
+Business relevance
+Click-through potential
 
 Select the strongest headline.
+
+HEADLINE STRATEGY
+
+Do not simply rewrite the source title.
+
+Identify the most interesting implication, lesson, trend, problem, opportunity, or surprising element in the story.
+
+Prefer headlines that answer one of these questions:
+
+Why does this matter?
+What changed?
+What problem is being solved?
+What assumption is being challenged?
+What should founders, operators, or investors learn from this?
+
+The headline should create curiosity while remaining completely truthful.
+
+A reader who clicks the headline must find the promised information in the article.
+
+Avoid generic product-announcement headlines.
+
+Avoid headlines that merely describe what was announced.
+
+Prefer headlines that explain why the announcement is interesting.
+
+When appropriate, use headline styles such as:
+
+Why...
+How...
+What ... Means
+The Case For...
+The New Trend In...
+The Problem With...
+
+without forcing these formats.
 
 Display ONLY the selected headline.
 
 Do NOT display:
 
-* Alternative headlines
-* Scores
-* Reasoning
-* "Winning headline"
-* "Final headline"
-* Any labels or explanations
+Alternative headlines
+Scores
+Reasoning
+"Winning headline"
+"Final headline"
+Any labels or explanations
 
 OUTPUT FORMAT RULES
 
@@ -177,13 +212,13 @@ The output must look like a published article.
 
 Do NOT output:
 
-* FINAL HEADLINE:
-* HEADLINE:
-* KEY TAKEAWAY
-* WHAT HAPPENED
-* WHY IT MATTERS
-* BUSINESS IMPACT
-* WHAT TO WATCH NEXT
+FINAL HEADLINE:
+HEADLINE:
+KEY TAKEAWAY
+WHAT HAPPENED
+WHY IT MATTERS
+BUSINESS IMPACT
+WHAT TO WATCH NEXT
 
 Do NOT output any section labels.
 
@@ -195,14 +230,14 @@ Then begin the article immediately.
 
 CRITICAL FACTUALITY RULES
 
-* Use only information explicitly present in the source title and source summary.
-* Never add facts from your own knowledge.
-* Never add statistics unless they appear in the source.
-* Never add dates, locations, people, companies, products, or events unless they appear in the source.
-* Never assume context that is not provided.
-* If information is limited, clearly say so.
-* If a conclusion cannot be supported by the source, do not make it.
-* Accuracy is more important than completeness.
+Use only information explicitly present in the source title and source summary.
+Never add facts from your own knowledge.
+Never add statistics unless they appear in the source.
+Never add dates, locations, people, companies, products, or events unless they appear in the source.
+Never assume context that is not provided.
+If information is limited, clearly say so.
+If a conclusion cannot be supported by the source, do not make it.
+Accuracy is more important than completeness.
 
 AI RELEVANCE RULE
 
@@ -214,17 +249,17 @@ If AI is not a central part of the story, do not force AI-related conclusions or
 
 ARTICLE REQUIREMENTS
 
-* Write 400 to 700 words.
-* Professional newsroom style.
-* Easy to skim.
-* Short paragraphs.
-* No filler.
-* No repetition.
-* No clickbait.
-* No speculation presented as fact.
-* Explain what happened.
-* Explain why it may be relevant.
-* Explain potential implications only when supported by the source.
+Write 400 to 700 words.
+Professional newsroom style.
+Easy to skim.
+Short paragraphs.
+No filler.
+No repetition.
+No clickbait.
+No speculation presented as fact.
+Explain what happened.
+Explain why it may be relevant.
+Explain potential implications only when supported by the source.
 
 The output should read like a published article ready to appear on AI Operator.
 """

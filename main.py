@@ -54,6 +54,10 @@ INCLUDE articles primarily about:
 * AI adoption
 * AI agents
 * Robotics powered by AI
+* Autonomous systems driven by AI
+* Enterprise AI applications
+* AI developer tools
+* AI model training and inference
 
 EXCLUDE articles primarily about:
 
@@ -69,16 +73,46 @@ EXCLUDE articles primarily about:
 * General business news
 * Energy markets
 * Geopolitics
+* Transportation news that is not primarily about AI
+* Startup news that is not primarily about AI
+* Consumer technology news that is not primarily about AI
+* General science news that is not primarily about AI
 
 even if AI is briefly mentioned.
 
-Return only:
+INCLUSION TEST
 
-YES
+An article should be included if AI is the primary reason the story is newsworthy.
 
-or
+Articles about major AI companies, AI models, AI products, AI research organizations, AI infrastructure providers, AI agents, AI developer tools, or AI-powered robotics should be included even if the terms "AI" or "artificial intelligence" are not explicitly used.
 
-NO
+Examples that should be INCLUDED:
+
+* OpenAI
+* ChatGPT
+* GPT models
+* Anthropic
+* Claude
+* Google DeepMind
+* Gemini
+* Perplexity
+* Midjourney
+* Cursor
+* Windsurf
+* Hugging Face
+* NVIDIA AI platforms
+* AI agents
+* AI coding tools
+
+Ask yourself:
+
+"Is AI the primary reason this story exists?"
+
+If YES, return YES.
+
+If NO, return NO.
+
+AI must be central to the story, not merely mentioned.
 """
 
     response = client.chat.completions.create(

@@ -150,13 +150,31 @@ HEADLINE CREATION
 
 Generate 5 headline options internally.
 
-Evaluate them using:
+Before creating the headlines, ignore the wording of the source title.
 
-Credibility
-Clarity
-Curiosity
-Business relevance
-Click-through potential
+Read the source content and identify the single most interesting element of the story.
+
+This may be:
+
+* A surprising fact
+* A contradiction
+* A business lesson
+* A trend
+* A problem being solved
+* A change in behavior
+* An opportunity
+* A risk
+* A strategic implication
+
+Build the headline around that insight, not around the wording of the source title.
+
+Evaluate all headline options using:
+
+* Credibility
+* Clarity
+* Curiosity
+* Business relevance
+* Click-through potential
 
 Select the strongest headline.
 
@@ -164,34 +182,44 @@ HEADLINE STRATEGY
 
 Do not simply rewrite the source title.
 
+The headline should be based on the story itself, not the source headline.
+
 Identify the most interesting implication, lesson, trend, problem, opportunity, or surprising element in the story.
 
 Prefer headlines that answer one of these questions:
 
-Why does this matter?
-What changed?
-What problem is being solved?
-What assumption is being challenged?
-What should founders, operators, or investors learn from this?
+* Why does this matter?
+* What changed?
+* What problem is being solved?
+* What assumption is being challenged?
+* What should founders, operators, or investors learn from this?
 
 The headline should create curiosity while remaining completely truthful.
 
 A reader who clicks the headline must find the promised information in the article.
 
+The headline should be more compelling than the source title while remaining factually accurate.
+
 Avoid generic product-announcement headlines.
 
 Avoid headlines that merely describe what was announced.
 
+Avoid press-release style headlines.
+
 Prefer headlines that explain why the announcement is interesting.
+
+Prefer headlines that reveal the significance of the story rather than the announcement itself.
 
 When appropriate, use headline styles such as:
 
-Why...
-How...
-What ... Means
-The Case For...
-The New Trend In...
-The Problem With...
+* Why...
+* How...
+* What ... Means
+* The Case For...
+* The New Trend In...
+* The Problem With...
+* Inside...
+* The Shift Toward...
 
 without forcing these formats.
 
@@ -199,12 +227,12 @@ Display ONLY the selected headline.
 
 Do NOT display:
 
-Alternative headlines
-Scores
-Reasoning
-"Winning headline"
-"Final headline"
-Any labels or explanations
+* Alternative headlines
+* Scores
+* Reasoning
+* "Winning headline"
+* "Final headline"
+* Any labels or explanations
 
 OUTPUT FORMAT RULES
 
@@ -212,13 +240,13 @@ The output must look like a published article.
 
 Do NOT output:
 
-FINAL HEADLINE:
-HEADLINE:
-KEY TAKEAWAY
-WHAT HAPPENED
-WHY IT MATTERS
-BUSINESS IMPACT
-WHAT TO WATCH NEXT
+* FINAL HEADLINE:
+* HEADLINE:
+* KEY TAKEAWAY
+* WHAT HAPPENED
+* WHY IT MATTERS
+* BUSINESS IMPACT
+* WHAT TO WATCH NEXT
 
 Do NOT output any section labels.
 

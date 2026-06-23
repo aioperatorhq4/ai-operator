@@ -9,11 +9,16 @@ supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 articles = (
     supabase
     .table("articles")
-    .select("id,title,created_at")
+    .select("id,title,summary")
     .order("created_at", desc=True)
     .limit(50)
     .execute()
 )
 
-for article in articles.data:
-    print(article["title"])
+article = articles.data[0]
+
+print("\nTITLE:")
+print(article["title"])
+
+print("\nSUMMARY:")
+print(article["summary"])

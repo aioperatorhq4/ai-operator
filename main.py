@@ -412,6 +412,28 @@ If the source contains fewer than 100 words of information, do not infer busines
 
 It is acceptable to publish a 100–200 word article if that is all the source supports.
 
+INSUFFICIENT INFORMATION RULE
+
+If the source title and summary do not contain enough factual information to support a useful article, return exactly:
+
+SKIP_ARTICLE
+
+Do not attempt to fill gaps with assumptions.
+
+Do not invent context.
+
+Do not invent business implications.
+
+Do not invent investor implications.
+
+Do not invent competitive implications.
+
+Do not invent risks, opportunities, or future developments.
+
+A short source is acceptable only when it contains enough concrete facts to support an accurate article.
+
+When in doubt, prefer SKIP_ARTICLE over speculation.
+
 ARTICLE REQUIREMENTS
 
 * Write only as much as the source material supports.
@@ -501,10 +523,14 @@ for source in sources.data:
 
         if existing.data:
             continue
-
+            
         print("Rewriting article...")
 
         rewritten_article = rewrite_article(title, summary)
+
+        if rewritten_article.strip() == "SKIP_ARTICLE":
+            print("Skipped - insufficient source material")
+            continue
 
         data = {
             "title": title,

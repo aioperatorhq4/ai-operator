@@ -1,4 +1,4 @@
-name: RSS Reader
+name: Rewrite Articles
 
 on:
   workflow_dispatch:

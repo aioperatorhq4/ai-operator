@@ -467,6 +467,12 @@ for source in sources.data:
 
         title = getattr(article, "title", "")
         summary = getattr(article, "summary", "")
+        
+        print("\nTITLE:")
+        print(title)
+
+        print("\nSUMMARY:")
+        print(summary)
 
         is_ai = is_ai_article(title, summary)
 

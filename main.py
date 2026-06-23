@@ -408,6 +408,9 @@ For limited sources:
 * Keep the article concise.
 
 A shorter accurate article is preferable to a longer speculative article.
+If the source contains fewer than 100 words of information, do not infer business implications, investor implications, competitive implications, future developments, risks, opportunities, or market impact unless explicitly stated in the source.
+
+It is acceptable to publish a 100–200 word article if that is all the source supports.
 
 ARTICLE REQUIREMENTS
 

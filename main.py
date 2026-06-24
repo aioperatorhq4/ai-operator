@@ -418,6 +418,10 @@ If the source title and summary do not contain enough factual information to sup
 
 SKIP_ARTICLE
 
+If the source material contains only an announcement, teaser, headline, brief description, or fewer than three concrete factual details, return exactly:
+
+SKIP_ARTICLE
+
 Do not attempt to fill gaps with assumptions.
 
 Do not invent context.

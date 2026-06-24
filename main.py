@@ -502,6 +502,9 @@ for source in sources.data:
         title = getattr(article, "title", "")
         summary = getattr(article, "summary", "")
         
+        if not summary and hasattr(article, "content"):
+            summary = article.content[0].value
+        
         print("\nTITLE:")
         print(title)
 

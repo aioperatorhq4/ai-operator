@@ -470,8 +470,13 @@ The output should read like a published article ready to appear on AI Operator.
         ]
     )
 
-    return response.choices[0].message.content
+    article = response.choices[0].message.content
 
+    print("\nREWRITE RESPONSE:")
+    print(article)
+    print("\nEND RESPONSE\n")
+
+    return article
 # -----------------------------
 # -----------------------------
 

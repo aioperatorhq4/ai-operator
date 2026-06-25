@@ -1,5 +1,6 @@
 import os
 import feedparser
+import trafilatura
 from openai import OpenAI
 from supabase import create_client
 
@@ -504,11 +505,21 @@ for source in sources.data:
         summary = getattr(article, "summary", "")
         link = getattr(article, "link", "")
 
-        if not summary and hasattr(article, "content"):
-            summary = article.content[0].value
-        if len(summary.strip()) < 100:
-           print("Skipped - insufficient source material (before GPT)")
-           continue
+        # Download the full article
+        full_text = get_article_text(link)
+
+        # Fall back to RSS if extraction failed
+        if not full_text:
+            full_text = summary
+
+        # If RSS has no summary, try RSS content
+        if not full_text and hasattr(article, "content"):
+            full_text = article.content[0].value
+
+        # Skip articles with almost no content
+        if len(full_text.strip()) < 100:
+            print("Skipped - insufficient source material (before GPT)")
+            continue
 
         print("\nTITLE:")
         print(title)
@@ -516,10 +527,10 @@ for source in sources.data:
         print("\nLINK:")
         print(link)
 
-        print("\nSUMMARY:")
-        print(summary)
+        print("\nFULL ARTICLE:")
+        print(full_text[:500])
 
-        is_ai = is_ai_article(title, summary)
+        is_ai = is_ai_article(title, full_text)
 
         print(f"AI Article: {is_ai} - {title}")
 
@@ -548,7 +559,7 @@ for source in sources.data:
         print("Rewriting article...")
 
         try:
-            rewritten_article = rewrite_article(title, summary)
+            rewritten_article = rewrite_article(title, full_text)
         except Exception as e:
             print("OPENAI ERROR:", e)
             continue
@@ -561,7 +572,7 @@ for source in sources.data:
             "title": title,
             "slug": slug,
             "summary": summary,
-            "content": summary,
+            "content": full_text,
             "source": source_name,
             "category": "AI",
             "rewritten_article": rewritten_article

@@ -479,6 +479,18 @@ The output should read like a published article ready to appear on AI Operator.
     print("\nEND RESPONSE\n")
 
     return article
+
+
+def get_article_text(url):
+
+    downloaded = trafilatura.fetch_url(url)
+
+    if not downloaded:
+        return ""
+
+    text = trafilatura.extract(downloaded)
+
+    return text or ""
 # -----------------------------
 # -----------------------------
 

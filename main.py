@@ -501,10 +501,10 @@ for source in sources.data:
 
         title = getattr(article, "title", "")
         summary = getattr(article, "summary", "")
-        
+
         if not summary and hasattr(article, "content"):
             summary = article.content[0].value
-        
+
         print("\nTITLE:")
         print(title)
 
@@ -524,7 +524,7 @@ for source in sources.data:
             .replace("'", "")
             .replace('"', "")
         )
-        
+
         existing = (
             supabase
             .table("articles")
@@ -535,10 +535,14 @@ for source in sources.data:
 
         if existing.data:
             continue
-            
+
         print("Rewriting article...")
 
-        rewritten_article = rewrite_article(title, summary)
+        try:
+            rewritten_article = rewrite_article(title, summary)
+        except Exception as e:
+            print("OPENAI ERROR:", e)
+            continue
 
         if rewritten_article.strip() == "SKIP_ARTICLE":
             print("Skipped - insufficient source material")
@@ -557,4 +561,5 @@ for source in sources.data:
         supabase.table("articles").insert(data).execute()
 
         print(f"Inserted: {title}")
+
 print("\nFinished processing all sources")

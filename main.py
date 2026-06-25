@@ -504,6 +504,9 @@ for source in sources.data:
 
         if not summary and hasattr(article, "content"):
             summary = article.content[0].value
+        if len(summary.strip()) < 100:
+           print("Skipped - insufficient source material (before GPT)")
+           continue
 
         print("\nTITLE:")
         print(title)

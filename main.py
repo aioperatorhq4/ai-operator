@@ -537,7 +537,8 @@ for source in sources.data:
         )
 
         if existing.data:
-            continue
+            print("Already processed. Skipping remaining articles from this source.")
+            break
 
         print("Rewriting article...")
 

@@ -84,7 +84,8 @@ INCLUSION TEST
 
 An article should be included if AI is the primary reason the story is newsworthy.
 
-Articles about major AI companies, AI models, AI products, AI research organizations, AI infrastructure providers, AI agents, AI developer tools, or AI-powered robotics should be included even if the terms "AI" or "artificial intelligence" are not explicitly used.
+Articles about major AI companies, AI models, AI products, AI research organizations, AI infrastructure providers, AI agents, AI developer tools, 
+or AI-powered robotics should be included even if the terms "AI" or "artificial intelligence" are not explicitly used.
 
 Examples that should be INCLUDED:
 
@@ -501,6 +502,7 @@ for source in sources.data:
 
         title = getattr(article, "title", "")
         summary = getattr(article, "summary", "")
+        link = getattr(article, "link", "")
 
         if not summary and hasattr(article, "content"):
             summary = article.content[0].value
@@ -510,6 +512,9 @@ for source in sources.data:
 
         print("\nTITLE:")
         print(title)
+
+        print("\nLINK:")
+        print(link)
 
         print("\nSUMMARY:")
         print(summary)

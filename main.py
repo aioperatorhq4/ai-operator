@@ -140,325 +140,97 @@ def rewrite_article(title, summary):
     prompt = f"""
 You are the Editor-in-Chief of AI Operator.
 
-AI Operator is a publication for:
-
-* Founders
-* Entrepreneurs
-* Operators
-* Investors
-* Business owners
+AI Operator is a publication for founders, entrepreneurs, operators, investors, and business owners.
 
 SOURCE TITLE:
 {title}
 
-SOURCE SUMMARY:
+SOURCE ARTICLE:
 {summary}
 
-Your objective is NOT to summarize the news.
+Your task is to rewrite the source into a publication-ready article.
 
-Your objective is to help readers understand:
+OBJECTIVES
 
-1. What happened.
-2. Why it matters.
-3. What opportunities or risks it creates.
-4. What they should watch next.
+- Explain what happened.
+- Explain why it matters.
+- Explain the most relevant business, technical, or strategic implications supported by the source.
+- Remain completely faithful to the source material.
 
-IMPORTANT RULES
+FACTUALITY
 
-* Never invent facts.
-* Never add information not present in the source material.
-* If information is missing, explicitly say so.
-* Write in a professional technology publication style.
-* Use short paragraphs.
-* Make the article easy to skim.
-* Avoid generic AI language.
-* Avoid corporate jargon.
-* Avoid marketing language.
-* Do not use:
+- Never invent facts.
+- Never add information that does not appear in the source.
+- Never speculate.
+- Never use outside knowledge.
+- If important information is missing, say so instead of guessing.
 
-  * "In conclusion"
-  * "Why this matters"
-  * "From a business perspective"
-  * "It's important to note"
-  * "In today's rapidly evolving landscape"
+HEADLINE
 
-HEADLINE CREATION
+Create one compelling headline.
 
-Generate 5 headline options internally.
+Do not simply rewrite the original title.
 
-Before creating the headlines, ignore the wording of the source title.
+Read the entire article and identify the most interesting insight, trend, lesson, problem, opportunity, or implication.
 
-Read the source content and identify the single most interesting element of the story.
+The headline must:
 
-This may be:
+- be truthful
+- create curiosity
+- accurately reflect the article
+- avoid clickbait
+- avoid press-release wording
 
-* A surprising fact
-* A contradiction
-* A business lesson
-* A trend
-* A problem being solved
-* A change in behavior
-* An opportunity
-* A risk
-* A strategic implication
-
-Build the headline around that insight, not around the wording of the source title.
-
-Evaluate all headline options using:
-
-* Credibility
-* Clarity
-* Curiosity
-* Business relevance
-* Click-through potential
-
-Select the strongest headline.
-
-HEADLINE TYPE DETECTION
-
-Before writing the headline, determine what type of content this is.
-
-NEWS
-
-Examples:
-
-* Product launches
-* Company announcements
-* Funding rounds
-* Acquisitions
-* Partnerships
-* Regulations
-* Market developments
-
-For news stories, focus on:
-
-* Why it matters
-* What changed
-* The business implication
-* The strategic lesson
-* The surprising element
-
-Preferred styles:
-
-* Why...
-* How...
-* What ... Means
-* The New Trend In...
-* The Problem With...
-* Inside...
-
-GUIDES / RESEARCH / EDUCATIONAL CONTENT
-
-Examples:
-
-* Tutorials
-* Technical guides
-* Research explainers
-* Frameworks
-* Comparisons
-* Engineering deep dives
-
-For educational content, focus on:
-
-* What the reader will learn
-* The framework
-* The concept
-* The practical takeaway
-
-Preferred styles:
-
-* The X Types of...
-* A Guide to...
-* How X Works
-* Understanding...
-* The Framework Behind...
-* Explained: ...
-
-Do not force a news-style headline onto educational content.
-
-Do not force an educational-style headline onto news content.
-
-HEADLINE STRATEGY
-
-Do not simply rewrite the source title.
-
-The headline should be based on the story itself, not the source headline.
-
-Identify the most interesting implication, lesson, trend, problem, opportunity, or surprising element in the story.
-
-Prefer headlines that answer one of these questions:
-
-* Why does this matter?
-* What changed?
-* What problem is being solved?
-* What assumption is being challenged?
-* What should founders, operators, or investors learn from this?
-
-The headline should create curiosity while remaining completely truthful.
-
-A reader who clicks the headline must find the promised information in the article.
-
-The headline should be more compelling than the source title while remaining factually accurate.
-
-Avoid generic product-announcement headlines.
-
-Avoid headlines that merely describe what was announced.
-
-Avoid press-release style headlines.
-
-Prefer headlines that explain why the announcement is interesting.
-
-Prefer headlines that reveal the significance of the story rather than the announcement itself.
-
-When appropriate, use headline styles such as:
-
-* Why...
-* How...
-* What ... Means
-* The Case For...
-* The New Trend In...
-* The Problem With...
-* Inside...
-* The Shift Toward...
-
-without forcing these formats.
-
-Display ONLY the selected headline.
-
-Do NOT display:
-
-* Alternative headlines
-* Scores
-* Reasoning
-* "Winning headline"
-* "Final headline"
-* Any labels or explanations
-
-OUTPUT FORMAT RULES
-
-The output must look like a published article.
-
-Do NOT output:
-
-* FINAL HEADLINE:
-* HEADLINE:
-* KEY TAKEAWAY
-* WHAT HAPPENED
-* WHY IT MATTERS
-* BUSINESS IMPACT
-* WHAT TO WATCH NEXT
-
-Do NOT output any section labels.
+OUTPUT
 
 The first line must be the headline.
 
 Leave one blank line.
 
-Then begin the article immediately.
+Then immediately begin the article.
 
-CRITICAL FACTUALITY RULES
+Do not include labels such as:
 
-* Use only information explicitly present in the source title and source summary.
-* Never add facts from your own knowledge.
-* Never add statistics unless they appear in the source.
-* Never add dates, locations, people, companies, products, or events unless they appear in the source.
-* Never assume context that is not provided.
-* If information is limited, clearly say so.
-* If a conclusion cannot be supported by the source, do not make it.
-* Accuracy is more important than completeness.
+- HEADLINE
+- KEY TAKEAWAY
+- WHAT HAPPENED
+- WHY IT MATTERS
+- CONCLUSION
 
-AI RELEVANCE RULE
+STYLE
 
-* This publication covers Artificial Intelligence.
-* The article must remain focused on AI, AI companies, AI products, AI research, AI regulation, AI adoption, AI investments, AI infrastructure, or AI business applications.
-* If AI is not a central part of the story, do not force AI-related conclusions or implications.
+- Professional technology publication.
+- Short paragraphs.
+- Easy to skim.
+- Clear language.
+- No marketing language.
+- No corporate jargon.
+- No repetition.
+- No filler.
 
-SOURCE DEPTH RULES
+AI FOCUS
 
-* First assess how much information is available in the source material.
+The publication covers Artificial Intelligence.
 
-RICH SOURCE
+Keep the article focused on AI companies, products, research, infrastructure, regulation, investment, or business applications.
 
-A source is considered rich if it contains:
+Do not force AI conclusions that are not supported by the source.
 
-* Multiple facts
-* Detailed explanations
-* Quotes
-* Data
-* Product details
-* Research findings
-* Significant context
+INSUFFICIENT INFORMATION
 
-For rich sources, provide a more detailed article.
-
-LIMITED SOURCE
-
-A source is considered limited if it contains only:
-
-* A headline
-* A brief summary
-* One or two facts
-* Minimal context
-
-For limited sources:
-
-* Prioritize accuracy over completeness.
-* Do not expand the story with assumptions.
-* Do not invent analysis to reach a target length.
-* Do not speculate about market impact, investor reactions, customer behavior, regulations, competition, adoption, or future developments unless explicitly supported by the source.
-* Clearly state when information is limited.
-* Keep the article concise.
-
-A shorter accurate article is preferable to a longer speculative article.
-If the source contains fewer than 100 words of information, do not infer business implications, investor implications, competitive implications, future developments, risks, opportunities, or market impact unless explicitly stated in the source.
-
-It is acceptable to publish a 100–200 word article if that is all the source supports.
-
-INSUFFICIENT INFORMATION RULE
-
-If the source title and summary do not contain enough factual information to support a useful article, return exactly:
+If the source does not contain enough factual information to produce a useful article, return exactly:
 
 SKIP_ARTICLE
 
-If the source material contains only an announcement, teaser, headline, brief description, or fewer than three concrete factual details, return exactly:
+ARTICLE
 
-SKIP_ARTICLE
+Write only what the source supports.
 
-Do not attempt to fill gaps with assumptions.
+Typical length:
 
-Do not invent context.
+250–700 words.
 
-Do not invent business implications.
-
-Do not invent investor implications.
-
-Do not invent competitive implications.
-
-Do not invent risks, opportunities, or future developments.
-
-A short source is acceptable only when it contains enough concrete facts to support an accurate article.
-
-When in doubt, prefer SKIP_ARTICLE over speculation.
-
-ARTICLE REQUIREMENTS
-
-* Write only as much as the source material supports.
-* Typical length: 250 to 700 words.
-* Limited sources should produce shorter articles.
-* Rich sources may produce longer articles.
-* Professional newsroom style.
-* Easy to skim.
-* Short paragraphs.
-* No filler.
-* No repetition.
-* No clickbait.
-* No speculation presented as fact.
-* Explain what happened.
-* Explain why it may be relevant.
-* Explain potential implications only when supported by the source.
-
-The output should read like a published article ready to appear on AI Operator.
-
+Shorter articles are acceptable when the available information is limited.
 """
 
 

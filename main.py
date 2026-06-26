@@ -500,6 +500,17 @@ def get_article_text(url):
 
 # -----------------------------
 
+AI_ONLY_SOURCES = [
+    "OpenAI",
+    "Anthropic",
+    "Google DeepMind",
+    "Hugging Face",
+    "AI News",
+    "MarkTechPost",
+    "VentureBeat AI",
+    "Ars Technica AI"
+]
+
 sources = supabase.table("sources").select("*").execute()
 
 for source in sources.data:
@@ -542,9 +553,13 @@ for source in sources.data:
         print("\nFULL ARTICLE:")
         print(full_text[:500])
 
-        is_ai = is_ai_article(title, full_text)
-
-        print(f"AI Article: {is_ai} - {title}")
+        # Skip GPT classification for AI-only sources
+        if source_name in AI_ONLY_SOURCES:
+            is_ai = True
+            print("AI Article: True (trusted AI source)")
+        else:
+            is_ai = is_ai_article(title, full_text)
+            print(f"AI Article: {is_ai} - {title}")
 
         if not is_ai:
             continue

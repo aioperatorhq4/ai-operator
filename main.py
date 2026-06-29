@@ -113,9 +113,13 @@ Ask yourself:
 
 "Is AI the primary reason this story exists?"
 
-If YES, return YES.
+Return ONLY:
 
-If NO, return NO.
+TRUE
+
+or
+
+FALSE
 
 AI must be central to the story, not merely mentioned.
 """
@@ -132,7 +136,7 @@ AI must be central to the story, not merely mentioned.
 
     answer = response.choices[0].message.content.strip().upper()
 
-    return "YES" in answer
+    return answer == "TRUE"
 
 # -----------------------------
 # ARTICLE REWRITER

@@ -183,67 +183,60 @@ ARTICLE
 
 FIRST STEP
 
-Determine whether the source contains enough factual information.
+Evaluate whether the source contains enough factual information to support a standalone news article.
 
 Return exactly:
 
 SKIP_ARTICLE
 
-if ANY of these are true:
+if ANY of the following are true:
 
-• fewer than three concrete facts
-• mostly an announcement
-• teaser article
-• promotional article
-• press release
-• event announcement
-• article shorter than about 150 words
-• mostly opinions
-• insufficient context
+* The source contains fewer than three concrete factual details.
+* The source is primarily an announcement, teaser, press release, promotional content, or event notice.
+* The source is mainly opinion or commentary rather than reporting.
+* The source lacks sufficient context to accurately explain the story.
+* The source discusses multiple unrelated stories, such as a newsletter, daily roundup, or weekly digest.
+* The source does not focus on a single primary news event.
 
-Do not explain.
-
---------------------------------------------------
+Do not explain your decision.
 
 SECOND STEP
 
-Identify the central news.
+Identify the single central news event.
 
 Ignore the wording of the original headline.
 
 Ask yourself:
 
-What is actually interesting here?
+"What is the most important news in this article?"
 
-Build a new headline around that.
+If there is no single dominant story, return:
 
-The headline should explain significance.
+SKIP_ARTICLE
 
-Never write:
+Create a new headline that captures the significance of the story rather than simply describing the announcement.
 
-Company X launches...
+The headline should be truthful, specific, and driven by the article's central insight.
 
-Company Y announces...
+Avoid headlines that simply state:
 
-Instead prefer:
+* Company X launches...
+* Company Y announces...
 
-Why...
+Instead, when appropriate, prefer headline styles such as:
 
-How...
-
-Inside...
-
-What ... Means
-
-The Shift Toward...
-
-The Problem With...
-
-only when appropriate.
+* Why...
+* How...
+* Inside...
+* What ... Means
+* The Shift Toward...
+* The Problem With...
 
 Never exaggerate.
 
-Never promise something the article doesn't deliver.
+Never promise information the article does not contain.
+
+The headline must accurately reflect the article the reader is about to read.
 
 --------------------------------------------------
 
@@ -401,7 +394,91 @@ def get_article_text(url):
 
     return text or ""
 # -----------------------------
+# CATEGORY CLASSIFIER
 # -----------------------------
+
+def classify_category(title, article):
+
+    prompt = f"""
+You are the Editor of AI Operator.
+
+Classify this article into EXACTLY ONE category.
+
+TITLE:
+{title}
+
+ARTICLE:
+{article}
+
+Choose ONE of the following categories:
+
+- AI Models
+- AI Companies
+- AI Startups
+- AI Research
+- AI Infrastructure
+- AI Chips
+- AI Agents
+- AI Robotics
+- AI Regulation
+- AI Investments
+- Enterprise AI
+- AI Developer Tools
+
+Guidelines:
+
+AI Models
+- New foundation models, LLMs, multimodal models, releases, benchmarks.
+
+AI Companies
+- Major AI companies, acquisitions, partnerships, executive changes.
+
+AI Startups
+- Startup launches, funding, growth, products.
+
+AI Research
+- Papers, benchmarks, scientific discoveries, academic research.
+
+AI Infrastructure
+- Datacenters, cloud AI, compute, inference, training infrastructure.
+
+AI Chips
+- GPUs, NPUs, AI accelerators, semiconductors.
+
+AI Agents
+- Autonomous agents, copilots, agent frameworks.
+
+AI Robotics
+- Physical robots powered by AI.
+
+AI Regulation
+- Government policy, legislation, legal decisions, compliance.
+
+AI Investments
+- Funding rounds, venture capital, investments, acquisitions.
+
+Enterprise AI
+- AI adoption by businesses, enterprise software, productivity.
+
+AI Developer Tools
+- SDKs, APIs, coding assistants, developer platforms.
+
+Return ONLY the category name.
+
+Do not explain.
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4.1-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+
+    return response.choices[0].message.content.strip()
 
 # -----------------------------
 
@@ -409,16 +486,6 @@ def get_article_text(url):
 
 # -----------------------------
 
-AI_ONLY_SOURCES = [
-    "OpenAI",
-    "Anthropic",
-    "Google DeepMind",
-    "Hugging Face",
-    "AI News",
-    "MarkTechPost",
-    "VentureBeat AI",
-    "Ars Technica AI"
-]
 
 sources = supabase.table("sources").select("*").execute()
 
@@ -482,39 +549,36 @@ for source in sources.data:
         print("\nFULL ARTICLE:")
         print(full_text[:500])
 
-        # Skip GPT classification for trusted AI sources
-        if source_name in AI_ONLY_SOURCES:
-            is_ai = True
-            print("AI Article: True (trusted AI source)")
-        else:
-            is_ai = is_ai_article(title, full_text)
-            print(f"AI Article: {is_ai} - {title}")
+       is_ai = is_ai_article(title, full_text)
+       print(f"AI Article: {is_ai} - {title}")
 
-        if not is_ai:
-            continue
+       if not is_ai:
+           continue
 
-        print("Rewriting article...")
+      category = classify_category(title, full_text)
+      print(f"Category: {category}")
 
-        try:
-            rewritten_article = rewrite_article(title, full_text)
-        except Exception as e:
-            print("OPENAI ERROR:", e)
-            continue
+      print("Rewriting article...")
 
-        if rewritten_article.strip() == "SKIP_ARTICLE":
-            print("Skipped - insufficient source material")
-            continue
+      try:
+          rewritten_article = rewrite_article(title, full_text)
+     except Exception as e:
+         print("OPENAI ERROR:", e)
+         continue
 
-        data = {
-            "title": title,
-            "slug": slug,
-            "summary": summary,
-            "content": full_text,
-            "source": source_name,
-            "category": "AI",
-            "rewritten_article": rewritten_article
-        }
+     if rewritten_article.strip() == "SKIP_ARTICLE":
+         print("Skipped - insufficient source material")
+         continue
 
+     data = {
+         "title": title,
+         "slug": slug,
+         "summary": summary,
+         "content": full_text,
+         "source": source_name,
+         "category": category,
+         "rewritten_article": rewritten_article
+}
         supabase.table("articles").insert(data).execute()
 
         print(f"Inserted: {title}")

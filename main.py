@@ -430,18 +430,38 @@ for source in sources.data:
         summary = getattr(article, "summary", "")
         link = getattr(article, "link", "")
 
+        slug = (
+            title.lower()
+            .replace(" ", "-")
+            .replace("'", "")
+            .replace('"', "")
+        )
+
+        # Check if already processed BEFORE downloading the article
+        existing = (
+            supabase
+            .table("articles")
+            .select("id")
+            .eq("slug", slug)
+            .execute()
+        )
+
+        if existing.data:
+            print("Already processed. Skipping remaining articles from this source.")
+            break
+
         # Download the full article
         full_text = get_article_text(link)
 
-        # Fall back to RSS if extraction failed
+        # Fall back to RSS summary
         if not full_text:
             full_text = summary
 
-        # If RSS has no summary, try RSS content
+        # Fall back to RSS content
         if not full_text and hasattr(article, "content"):
             full_text = article.content[0].value
 
-        # Skip articles with almost no content
+        # Skip tiny articles
         if len(full_text.strip()) < 100:
             print("Skipped - insufficient source material (before GPT)")
             continue
@@ -455,7 +475,7 @@ for source in sources.data:
         print("\nFULL ARTICLE:")
         print(full_text[:500])
 
-        # Skip GPT classification for AI-only sources
+        # Skip GPT classification for trusted AI sources
         if source_name in AI_ONLY_SOURCES:
             is_ai = True
             print("AI Article: True (trusted AI source)")
@@ -465,25 +485,6 @@ for source in sources.data:
 
         if not is_ai:
             continue
-
-        slug = (
-            title.lower()
-            .replace(" ", "-")
-            .replace("'", "")
-            .replace('"', "")
-        )
-
-        existing = (
-            supabase
-            .table("articles")
-            .select("id")
-            .eq("slug", slug)
-            .execute()
-        )
-
-        if existing.data:
-            print("Already processed. Skipping remaining articles from this source.")
-            break
 
         print("Rewriting article...")
 

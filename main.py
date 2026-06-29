@@ -1,6 +1,9 @@
 import os
 import feedparser
 import trafilatura
+
+from concurrent.futures import ThreadPoolExecutor
+
 from openai import OpenAI
 from supabase import create_client
 
@@ -424,7 +427,7 @@ for source in sources.data:
 
     feed = feedparser.parse(source_url)
 
-    for article in feed.entries[:20]:
+    for article in feed.entries[:5]:
 
         title = getattr(article, "title", "")
         summary = getattr(article, "summary", "")
@@ -447,8 +450,8 @@ for source in sources.data:
         )
 
         if existing.data:
-            print("Already processed. Skipping remaining articles from this source.")
-            break
+            print("Already processed.")
+            continue
 
         # Download the full article
         full_text = get_article_text(link)
